@@ -5,6 +5,8 @@ import { saveAs } from "file-saver";
 import LeafletMap from "./components/LeafletMap";
 import "./App.css";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || "/api";
+
 function App() {
   const [data, setData] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -51,7 +53,7 @@ function App() {
 
   useEffect(() => {
     console.log('🚀 App mounted, fetching states...');
-    axios.get("http://localhost:5000/locations")
+    axios.get(`${API_BASE_URL}/locations`)
       .then(res => {
         console.log('✅ Locations response:', res.data);
         const states = res.data.states || [];
@@ -63,14 +65,14 @@ function App() {
         console.error('❌ Failed to load locations');
         console.error('❌ Error message:', err.message);
         console.error('❌ Error details:', err);
-        alert('Failed to load states. Please check if backend is running at http://localhost:5000');
+        alert('Failed to load states. Please check if backend is running at ' + API_BASE_URL);
       });
   }, []);
 
   useEffect(() => {
     if (selectedState) {
       console.log('🔍 Fetching cities for state:', selectedState);
-      const url = `http://localhost:5000/cities?state=${encodeURIComponent(selectedState)}`;
+      const url = `${API_BASE_URL}/cities?state=${encodeURIComponent(selectedState)}`;
       console.log('🌐 Request URL:', url);
       axios.get(url).then(res => {
         console.log('✅ Cities response received:', res.data);
@@ -106,7 +108,7 @@ function App() {
       if (selectedCity) params.city = selectedCity;
       if (fromDate) params.fromDate = fromDate;
       if (toDate) params.toDate = toDate;
-      const res = await axios.get("http://localhost:5000/fetch-data", { params });
+      const res = await axios.get(`${API_BASE_URL}/fetch-data`, { params });
       setData(res.data);
     } catch (err) {
       console.error("Fetch error", err);

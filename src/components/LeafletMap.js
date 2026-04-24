@@ -13,6 +13,8 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../styles/locationPulse.css";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || "/api";
+
 const ORS_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjY4MWZjMTExZWQ3ZTRjOWY4Y2M1MzY3YWM5YmFlODU1IiwiaCI6Im11cm11cjY0In0=";
 
 const pulseIcon = L.divIcon({
@@ -170,7 +172,7 @@ function LeafletMap({ points = [], currentLocation, onLocationSelected, routeInf
           onSelect={async (pos) => {
             let extra = null;
             try {
-              const res = await axios.get(`http://localhost:5000/reverse?lat=${pos.lat}&lon=${pos.lon}`);
+              const res = await axios.get(`${API_BASE_URL}/reverse?lat=${pos.lat}&lon=${pos.lon}`);
               extra = res.data;
             } catch (err) {
               console.warn("Reverse lookup failed", err.message);
