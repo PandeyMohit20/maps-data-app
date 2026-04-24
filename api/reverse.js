@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -20,4 +20,4 @@ export default async function handler(req, res) {
     console.error("Reverse geocoding error:", err.message);
     res.status(500).json({ error: err.message });
   }
-}
+};
